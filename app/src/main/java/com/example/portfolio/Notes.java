@@ -4,7 +4,20 @@ public class Notes { }
 /* GIT
 Initialize Git: VCS - Create Git Repos - Select Root dir of project
 Add and Commit: Git - Add
+Connect your local repository to the remote repository on GitHub:
 
+In Android Studio, go to the menu bar and select VCS -> Git -> Remotes -> Configure...
+Click on the "+" sign in the top left corner to add a new remote repository.
+Provide a name for the remote repository (e.g., "origin").
+Enter the URL of your GitHub repository (e.g., "https://github.com/your-username/your-repository").
+Click on the "OK" button to save the remote repository configuration.
+Push your local commits to GitHub:
+
+In Android Studio, go to the menu bar and select VCS -> Git -> Push.
+Select the remote repository you configured in the previous step.
+Click on the "Push" button to push your local commits to GitHub.
+
+Place to get git token: https://github.com/settings/tokens
  */
 
 /* TextInputLayout
