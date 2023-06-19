@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,6 +32,7 @@ public class RegisterActivity extends AppCompatActivity {
         TextInputLayout passwordTextInputLayout = findViewById(R.id.passwordTextInputLayout);
         TextInputLayout confirmPasswordTextInputLayout = findViewById(R.id.confirmPasswordTextInputLayout);
         Button registerButton = findViewById(R.id.registerButton);
+        MaterialButton signInButton = findViewById(R.id.signInButton);
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -145,6 +147,13 @@ public class RegisterActivity extends AppCompatActivity {
                                 }
                             }
                         });
+            }
+        });
+
+        signInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
             }
         });
     }

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -16,7 +17,6 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
-import com.facebook.login.Login;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
@@ -48,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
         Button signInButton = findViewById(R.id.signInButton);
         Button registerButton = findViewById(R.id.registerButton);
         LoginButton facebookButton = findViewById(R.id.facebookLoginButton);
+        EditText forgotPasswordEditText = findViewById(R.id.forgotPasswordEditText);
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
@@ -76,15 +77,12 @@ public class LoginActivity extends AppCompatActivity {
                                         } else {
                                             Toast.makeText(LoginActivity.this, "Authentication failed.", Toast.LENGTH_LONG).show();
                                         }
-
-
                                     }
                                 }
                             });
                 } else {
                     Toast.makeText(LoginActivity.this, "Please fill in all fields ( •̀ ω •́ )✧", Toast.LENGTH_LONG).show();
                 }
-
             }
         });
 
@@ -92,6 +90,13 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+            }
+        });
+
+        forgotPasswordEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class));
             }
         });
 
@@ -125,13 +130,14 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        boolean isEmailVerified = firebaseUser.isEmailVerified();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-        if(currentUser != null && isEmailVerified){
-            reload();
+        if (firebaseUser != null) {
+            boolean isEmailVerified = firebaseUser.isEmailVerified();
+            // Check if user is signed in (non-null) and update UI accordingly.
+            FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+            if(currentUser != null && isEmailVerified){
+                reload();
+            }
         }
-
         // CHECK FOR FACEBOOK USER ALREADY SIGNED IN
 //        AccessToken accessToken = AccessToken.getCurrentAccessToken();
 //        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
