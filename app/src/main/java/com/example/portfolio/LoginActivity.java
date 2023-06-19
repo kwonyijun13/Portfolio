@@ -36,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
     // FACEBOOK
-    private CallbackManager callbackManager;
+    //private CallbackManager callbackManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,44 +96,45 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         // FACEBOOK LOG IN (WARNING: CANNOT BE TESTED UNTIL PUBLISHED AS OF 2023-06-19)
-        callbackManager = CallbackManager.Factory.create();
-        facebookButton.setReadPermissions(Arrays.asList(emailTextInputLayout.getEditText().getText().toString().trim()));
-
-        LoginManager.getInstance().registerCallback(callbackManager,
-                new FacebookCallback<LoginResult>() {
-                    @Override
-                    public void onSuccess(LoginResult loginResult) {
-                        // App code
-                    }
-
-                    @Override
-                    public void onCancel() {
-                        // App code
-                    }
-
-                    @Override
-                    public void onError(FacebookException exception) {
-                        // App code
-                    }
-                });
-
-
-        LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("public_profile"));
+//        callbackManager = CallbackManager.Factory.create();
+//        facebookButton.setReadPermissions(Arrays.asList(emailTextInputLayout.getEditText().getText().toString().trim()));
+//
+//        LoginManager.getInstance().registerCallback(callbackManager,
+//                new FacebookCallback<LoginResult>() {
+//                    @Override
+//                    public void onSuccess(LoginResult loginResult) {
+//                        // App code
+//                    }
+//
+//                    @Override
+//                    public void onCancel() {
+//                        // App code
+//                    }
+//
+//                    @Override
+//                    public void onError(FacebookException exception) {
+//                        // App code
+//                    }
+//                });
+//
+//
+//        LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("public_profile"));
         // END OF FACEBOOK LOG IN (EXPRESS LOGIN NOT ENABLED)
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        boolean isEmailVerified = firebaseUser.isEmailVerified();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-        if(currentUser != null){
+        if(currentUser != null && isEmailVerified){
             reload();
         }
 
         // CHECK FOR FACEBOOK USER ALREADY SIGNED IN
-        AccessToken accessToken = AccessToken.getCurrentAccessToken();
-        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
+//        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+//        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
     }
 
     private void reload() {
@@ -152,11 +153,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     // FACEBOOK
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        callbackManager.onActivityResult(requestCode, resultCode, data);
-        super.onActivityResult(requestCode, resultCode, data);
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        callbackManager.onActivityResult(requestCode, resultCode, data);
+//        super.onActivityResult(requestCode, resultCode, data);
+//    }
 }
 
 /* TODO
