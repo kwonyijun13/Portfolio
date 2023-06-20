@@ -106,6 +106,13 @@ includes LoginBehavior, DefaultAudience, ToolTipPopup.Style and permissions on t
 
  */
 
+/* GOOGLE LOG IN
+Add Google Play Services
+Settings - Appearance & Behavior - System Settings - Android SDK - SDK Tools - Check: Google Play Services
+
+Link: https://developers.google.com/identity/sign-in/android/start-integrating
+ */
+
 /* onCreate() vs onStart()
 onCreate():
 1. called when activity is first created
@@ -161,4 +168,65 @@ popupWindowEmail = new PopupWindow(); ...
 
 /* FRAGMENTS
 - Reusable UI Components
+
+1. Create a new directory under 'res' called 'menu'
+2. Create the items you want:
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_home"
+        android:title="Home"
+        android:icon="@drawable/ic_home" />
+
+    <item
+        android:id="@+id/navigation_dashboard"
+        android:title="Dashboard"
+        android:icon="@drawable/ic_dashboard" />
+
+    <item
+        android:id="@+id/navigation_notifications"
+        android:title="Notifications"
+        android:icon="@drawable/ic_notifications" />
+</menu>
+3. Add a BottomNavigationView widget in the activity.xml
+<com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:menu="@menu/bottom_navigation_menu" />
+4. Now create separate fragment classes for each item (good to create a new directory called 'fragments')
+
+*/
+
+/* ScrollView vs NestedScrollView
+
+ScrollView is a basic scrolling container that allows a single child view to be scrolled vertically.
+It's typically used when you have a small amount of content that needs to be scrolled.
+ScrollView is not optimized for nested scrolling scenarios and may not handle nested scrolling views (such as RecyclerView or ListView) efficiently.
+It does not support nested scrolling by default, meaning if you have a ScrollView inside another scrolling container, only the outer scrolling container will scroll.
+
+NestedScrollView is an extended version of ScrollView with added support for handling nested scrolling views.
+It's specifically designed to handle scenarios where you have multiple scrolling views nested inside each other, such as a ScrollView inside another ScrollView or a RecyclerView inside a ScrollView.
+NestedScrollView enables smooth scrolling and better performance in situations where there are nested scrolling views.
+It provides more advanced features for handling nested scrolling, including nested scrolling events and better coordination between scrolling views.
+In summary, if you have a simple scrolling container with a single child view, ScrollView is sufficient. However, if you have nested scrolling views or need more advanced features for handling nested scrolling scenarios, such as nested scrolling events and better coordination, NestedScrollView is the preferred choice.
+ */
+
+/* IMPORTING FONTS
+1. Create new dir named 'assets' in the 'app' module (main)
+2. inside the 'assets', create another dir called 'fonts'
+3. copy font files in
+4. under the res/font (create), create a new XML file
+5. Inside the .java
+        Typeface customFont = Typeface.createFromAsset(getAssets(), "fonts/CoffeeHealing-1GrKe.ttf");
+        qrButton.setTypeface(customFont);
+
+FOR CUSTOM FONTS
+Example:
+<font-family xmlns:android="http://schemas.android.com/apk/res/android">
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="400"
+        android:font="@font/my_custom_font" />
+</font-family>
  */

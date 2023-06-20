@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="20dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/qrMaterialButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:layout_weight="1"
+                android:layout_margin="20dp"
+                android:text="QR CODE SCANNER"
+                android:backgroundTint="@color/black"
+                app:strokeColor="@color/sky_blue"
+                app:strokeWidth="2dp"
+                app:icon="@drawable/ic_qr_scanner"
+                app:iconGravity="top"
+                app:iconSize="40dp">
+
+                <!-- Used layout_weight="1" & width="0" to make them equal -->
+
+            </com.google.android.material.button.MaterialButton>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/gpsMaterialButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:layout_weight="1"
+                android:layout_margin="20dp"
+                android:text="GPS"
+                android:backgroundTint="@color/black"
+                app:strokeColor="@color/light_green"
+                app:strokeWidth="2dp"
+                app:icon="@drawable/ic_gps"
+                app:iconGravity="top"
+                app:iconSize="40dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/youtubeConverterMaterialButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:layout_weight="1"
+                android:layout_margin="20dp"
+                android:text="YOUTUBE CONVERTER"
+                android:backgroundTint="@color/black"
+                app:strokeColor="@color/light_red"
+                app:strokeWidth="2dp"
+                app:icon="@drawable/ic_youtube"
+                app:iconGravity="top"
+                app:iconSize="40dp">
+
+            </com.google.android.material.button.MaterialButton>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/nullMaterialButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:layout_weight="1"
+                android:layout_margin="20dp"
+                android:text="GPS"
+                android:backgroundTint="@color/black"
+                app:strokeColor="@color/pink"
+                app:strokeWidth="2dp"
+                app:icon="@drawable/ic_gps"
+                app:iconGravity="top"
+                app:iconSize="40dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</ScrollView>

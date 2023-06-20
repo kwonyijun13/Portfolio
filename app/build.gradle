@@ -42,6 +42,9 @@ dependencies {
     // Facebook Log In
     implementation 'com.facebook.android:facebook-login:latest.release'
 
+    // Google Play Services
+    implementation 'com.google.android.gms:play-services-auth:20.5.0'
+
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.5.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
