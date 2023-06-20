@@ -31,11 +31,13 @@ public class HomeFragment extends Fragment {
         MaterialButton qrButton = view.findViewById(R.id.qrMaterialButton);
         MaterialButton gpsButton = view.findViewById(R.id.gpsMaterialButton);
         MaterialButton youtubeButton = view.findViewById(R.id.youtubeConverterMaterialButton);
+        MaterialButton musicButton = view.findViewById(R.id.musicMaterialButton);
 
         // CUSTOM FONT
         Typeface customFont = Typeface.createFromAsset(view.getResources().getAssets(), "fonts/CoffeeHealing-1GrKe.ttf");
         qrButton.setTypeface(customFont);
         gpsButton.setTypeface(customFont);
         youtubeButton.setTypeface(customFont);
+        musicButton.setTypeface(customFont);
     }
 }

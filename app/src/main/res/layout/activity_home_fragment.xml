@@ -21,14 +21,15 @@
                 android:layout_height="match_parent"
                 android:padding="10dp"
                 android:layout_weight="1"
-                android:layout_margin="20dp"
+                android:layout_marginRight="10dp"
                 android:text="QR CODE SCANNER"
+                android:maxLines="1"
                 android:backgroundTint="@color/black"
                 app:strokeColor="@color/sky_blue"
                 app:strokeWidth="2dp"
                 app:icon="@drawable/ic_qr_scanner"
                 app:iconGravity="top"
-                app:iconSize="40dp">
+                app:iconSize="80dp">
 
                 <!-- Used layout_weight="1" & width="0" to make them equal -->
 
@@ -40,14 +41,15 @@
                 android:layout_height="match_parent"
                 android:padding="10dp"
                 android:layout_weight="1"
-                android:layout_margin="20dp"
+                android:layout_marginLeft="10dp"
                 android:text="GPS"
+                android:maxLines="1"
                 android:backgroundTint="@color/black"
                 app:strokeColor="@color/light_green"
                 app:strokeWidth="2dp"
                 app:icon="@drawable/ic_gps"
                 app:iconGravity="top"
-                app:iconSize="40dp"/>
+                app:iconSize="80dp"/>
 
         </LinearLayout>
 
@@ -62,31 +64,33 @@
                 android:layout_height="match_parent"
                 android:padding="10dp"
                 android:layout_weight="1"
-                android:layout_margin="20dp"
+                android:layout_marginRight="10dp"
                 android:text="YOUTUBE CONVERTER"
+                android:maxLines="1"
                 android:backgroundTint="@color/black"
                 app:strokeColor="@color/light_red"
                 app:strokeWidth="2dp"
                 app:icon="@drawable/ic_youtube"
                 app:iconGravity="top"
-                app:iconSize="40dp">
+                app:iconSize="80dp">
 
             </com.google.android.material.button.MaterialButton>
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/nullMaterialButton"
+                android:id="@+id/musicMaterialButton"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:padding="10dp"
                 android:layout_weight="1"
-                android:layout_margin="20dp"
-                android:text="GPS"
+                android:layout_marginLeft="10dp"
+                android:text="MUSIC LIBRARY"
+                android:maxLines="1"
                 android:backgroundTint="@color/black"
                 app:strokeColor="@color/pink"
                 app:strokeWidth="2dp"
-                app:icon="@drawable/ic_gps"
+                app:icon="@drawable/ic_music_library"
                 app:iconGravity="top"
-                app:iconSize="40dp"/>
+                app:iconSize="80dp"/>
 
         </LinearLayout>
 
