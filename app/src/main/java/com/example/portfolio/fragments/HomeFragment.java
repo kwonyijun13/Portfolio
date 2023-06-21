@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.helper.widget.Carousel;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -41,9 +43,6 @@ public class HomeFragment extends Fragment {
         MaterialButton musicButton = view.findViewById(R.id.musicMaterialButton);
         MaterialButton gameButton = view.findViewById(R.id.gameMaterialButton);
         Carousel carousel = view.findViewById(R.id.carousel);
-        ImageView imageView1 = view.findViewById(R.id.firstImageView);
-        ImageView imageView2 = view.findViewById(R.id.secondImageView);
-        ImageView imageView3 = view.findViewById(R.id.thirdImageView);
 
         // CUSTOM FONT
         Typeface customFont = Typeface.createFromAsset(view.getResources().getAssets(), "fonts/CoffeeHealing-1GrKe.ttf");
@@ -70,14 +69,35 @@ public class HomeFragment extends Fragment {
                 // need to implement this to populate the view at the given index
                 int imageResId = imageList.get(index);
 
-                imageView1.setImageResource(imageResId);
-                imageView2.setImageResource(imageResId);
-                imageView3.setImageResource(imageResId);
+                ImageView imageView = view.findViewById(R.id.carouselImageView);
+                imageView.setImageResource(imageResId);
             }
 
             @Override
             public void onNewItem(int index) {
                 // called when an item is set
+            }
+        });
+
+        qrButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // NEW INTENT FOR FRAGMENT
+                FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container, new QRCodeScannerFragment());
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
+
+        musicButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // NEW INTENT FOR FRAGMENT
+                FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container, new MusicFragment());
+                transaction.addToBackStack(null);
+                transaction.commit();
             }
         });
     }

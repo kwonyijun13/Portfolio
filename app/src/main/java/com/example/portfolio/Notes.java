@@ -329,15 +329,23 @@ In summary, if you have a simple scrolling container with a single child view, S
 3. copy font files in
 4. under the res/font (create), create a new XML file
 5. Inside the .java
-        Typeface customFont = Typeface.createFromAsset(getAssets(), "fonts/CoffeeHealing-1GrKe.ttf");
+        Typeface customFont = Typeface.createFromAsset(getAssets(), "fonts/coffee_healing.ttf");
         qrButton.setTypeface(customFont);
 
-FOR CUSTOM FONTS
+FOR CUSTOM FONTS (REMEMBER IMPORT INTO FONT FOLDER)
 Example:
 <font-family xmlns:android="http://schemas.android.com/apk/res/android">
     <font
         android:fontStyle="normal"
         android:fontWeight="400"
-        android:font="@font/my_custom_font" />
+        android:font="@font/coffee_healing" />
 </font-family>
+ */
+
+/* QR CODE SCANNER USING ZXING
+In build.gradle
+implementation 'com.google.zxing:core:3.4.0'
+implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
+
+
  */
