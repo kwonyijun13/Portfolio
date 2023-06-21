@@ -39,6 +39,7 @@ public class HomeFragment extends Fragment {
         MaterialButton gpsButton = view.findViewById(R.id.gpsMaterialButton);
         MaterialButton youtubeButton = view.findViewById(R.id.youtubeConverterMaterialButton);
         MaterialButton musicButton = view.findViewById(R.id.musicMaterialButton);
+        MaterialButton gameButton = view.findViewById(R.id.gameMaterialButton);
         Carousel carousel = view.findViewById(R.id.carousel);
         ImageView imageView1 = view.findViewById(R.id.firstImageView);
         ImageView imageView2 = view.findViewById(R.id.secondImageView);
@@ -50,6 +51,7 @@ public class HomeFragment extends Fragment {
         gpsButton.setTypeface(customFont);
         youtubeButton.setTypeface(customFont);
         musicButton.setTypeface(customFont);
+        gameButton.setTypeface(customFont);
 
         List<Integer> imageList = new ArrayList<>();
         imageList.add(R.drawable.cat);
