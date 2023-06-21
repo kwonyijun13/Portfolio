@@ -5,6 +5,7 @@
 
     <style name="Theme.Portfolio" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/white</item>
+        <item name="android:statusBarColor">@color/salmon</item>
     </style>
 
     <style name="BottomNavigationStyle" parent="Widget.MaterialComponents.BottomNavigationView">

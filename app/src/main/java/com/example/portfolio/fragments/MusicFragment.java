@@ -1,6 +1,5 @@
 package com.example.portfolio.fragments;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.appcompat.app.ActionBar;
@@ -41,9 +40,8 @@ public class MusicFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_music, container, false);
 
         Toolbar toolbar = view.findViewById(R.id.toolbar);
-        TextView toolbarTitle = toolbar.findViewById(R.id.toolbar_title);
 
-        // Set the toolbar as the ActionBar for this fragment
+        // SET TOOLBAR AS ACTIONBAR
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(toolbar);
 
