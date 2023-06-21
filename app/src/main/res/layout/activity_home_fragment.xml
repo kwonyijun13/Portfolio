@@ -3,12 +3,60 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:padding="20dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
+        <TextView
+            android:text="Welcome to Kwon Yi Jun's portfolio app!"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"/>
+
+        <TextView
+            android:text="Swipe to see kittens!"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <androidx.constraintlayout.motion.widget.MotionLayout
+            android:id="@+id/motionLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutDescription="@xml/scene_01"
+            tools:showPaths="true">
+
+            <ImageView
+                android:id="@+id/firstImageView"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"/>
+
+            <ImageView
+                android:id="@+id/secondImageView"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"/>
+
+            <ImageView
+                android:id="@+id/thirdImageView"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"/>
+
+            <androidx.constraintlayout.helper.widget.Carousel
+                android:id="@+id/carousel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:carousel_forwardTransition="@+id/forward"
+                app:carousel_backwardTransition="@+id/backward"
+                app:carousel_previousState="@+id/previous"
+                app:carousel_nextState="@+id/next"
+                app:carousel_infinite="true"
+                app:carousel_firstView="@+id/firstImageView"
+                app:constraint_referenced_ids="firstImageView,secondImageView" />
+
+        </androidx.constraintlayout.motion.widget.MotionLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -62,6 +62,117 @@ plugins {
 }
  */
 
+/* MOTIONLAYOUT
+https://developer.android.com/develop/ui/views/animations/motionlayout
+Example:
+In .xml
+<androidx.constraintlayout.motion.widget.MotionLayout
+            android:id="@+id/motionLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutDescription="@xml/scene_01"
+            tools:showPaths="true">
+
+            <ImageView
+                android:id="@+id/firstImageView"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"/>
+
+            <ImageView
+                android:id="@+id/secondImageView"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"/>
+
+            <androidx.constraintlayout.helper.widget.Carousel
+                android:id="@+id/carousel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:carousel_forwardTransition="@+id/forward"
+                app:carousel_backwardTransition="@+id/backward"
+                app:carousel_previousState="@+id/previous"
+                app:carousel_nextState="@+id/next"
+                app:carousel_infinite="true"
+                app:carousel_firstView="@+id/firstImageView"
+                app:constraint_referenced_ids="firstImageView,secondImageView" />
+
+        </androidx.constraintlayout.motion.widget.MotionLayout>
+In scene_01.xml
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:motion="http://schemas.android.com/apk/res-auto">
+
+    <Transition
+        motion:constraintSetStart="@id/start"
+        motion:constraintSetEnd="@+id/next"
+        motion:duration="1000"
+        android:id="@+id/forward">
+        <OnSwipe
+            motion:dragDirection="dragLeft"
+            motion:touchAnchorSide="left" />
+    </Transition>
+
+    <Transition
+        motion:constraintSetStart="@+id/start"
+        motion:constraintSetEnd="@+id/previous"
+        android:id="@+id/backward">
+        <OnSwipe
+            motion:dragDirection="dragRight"
+            motion:touchAnchorSide="right" />
+    </Transition>
+
+    <ConstraintSet android:id="@+id/start">
+        <Constraint
+            android:id="@+id/button"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginStart="8dp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toTopOf="parent" />
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/end">
+        <Constraint
+            android:id="@+id/button"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginEnd="8dp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintTop_toTopOf="parent" />
+    </ConstraintSet>
+
+</MotionScene>
+
+In .java
+
+
+List<Integer> imageList = new ArrayList<>();
+        imageList.add(R.drawable.cat);
+        imageList.add(R.drawable.blackcat);
+
+        carousel.setAdapter(new Carousel.Adapter() {
+            @Override
+            public int count() {
+                // need to return the number of items we have in the carousel
+                return imageList.size();
+            }
+
+            @Override
+            public void populate(View view, int index) {
+                // need to implement this to populate the view at the given index
+                int imageResId = imageList.get(index);
+
+                imageView1.setImageResource(imageResId);
+                imageView2.setImageResource(imageResId);
+            }
+
+            @Override
+            public void onNewItem(int index) {
+                // called when an item is set
+            }
+        });
+ */
+
 /* MATERIALBUTTON
 Material Design styling: MaterialButton implements the Material Design guidelines for buttons, providing a modern and visually appealing appearance out of the box. It supports elevation, ripple effects, and other Material Design attributes.
 
