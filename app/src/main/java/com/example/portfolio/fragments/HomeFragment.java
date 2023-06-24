@@ -99,3 +99,23 @@ public class HomeFragment extends Fragment {
         });
     }
 }
+
+/*
+OnCreate():
+Called when the fragment is being created, but BEFORE its view hierarchy is created
+PRIMARILY USED FOR:
+1. Performing NON-UI related initialization
+- such as initializing variables
+- setting up dependencies
+- or performing any other setup tasks that don't require access to the fragment's view hierarchy
+
+onCreateView(): This method is called when the fragment needs to create its layout and view hierarchy.
+In this method, you typically inflate a layout XML file to define the UI of the fragment and initialize
+any UI elements or references you need to interact with. It is important to return the root view of the
+fragment's layout from this method.
+
+onViewCreated(): This method is called immediately after onCreateView() and indicates that the view hierarchy
+of the fragment has been created. It is useful for performing additional setup or initialization that requires
+access to the fragment's view hierarchy. Here, you can find and reference UI elements using findViewById()
+and set up event listeners or perform any other view-related operations.
+ */
