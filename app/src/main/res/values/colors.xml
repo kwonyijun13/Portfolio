@@ -10,4 +10,6 @@
     <color name="light_red">#F15E5E</color>
     <color name="orange">#F2A40C</color>
     <color name="salmon">#FA8072</color>
+    <color name="grey">#A9A9A9</color>
+    <color name="light_grey">#E2E2E2</color>
 </resources>

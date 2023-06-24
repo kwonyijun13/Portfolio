@@ -12,8 +12,4 @@
         <item name="android:background">@color/orange</item>
     </style>
 
-    <style name="CustomFont" parent="Widget.AppCompat.TextView">
-        <item name="fontFamily">@font/coffee_healing</item>
-    </style>
-
 </resources>

@@ -342,10 +342,87 @@ Example:
 </font-family>
  */
 
-/* QR CODE SCANNER USING ZXING
-In build.gradle
-implementation 'com.google.zxing:core:3.4.0'
-implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
+/* FRAMELAYOUT
+Used when I want to overlay multiple views
+single child layout
+managing fragments
+ */
 
+/* SEARCHVIEW AND CUSTOM ONE
+Searchview: user MUST press the search icon before being able to type in...
 
+Custom:
+<LinearLayout
+    android:id="@+id/search_bar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/grey"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/search_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_search" />
+
+    <EditText
+        android:id="@+id/search_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Search..."
+        android:background="@null" />
+
+</LinearLayout>
+
+ */
+
+/* GETTING PERMISSIONS
+AndroidManifest.xml
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+Activity.java
+import android.Manifest;
+
+// Define a constant for the permission request code
+private static final int PERMISSION_REQUEST_CODE = 123;
+
+private void requestStoragePermission() {
+        // Check if the permission is already granted
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted, request it
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    PERMISSION_REQUEST_CODE);
+        } else {
+            // Permission is already granted
+            // Proceed with your logic to retrieve music files
+            songList = getMusicItemsFromMediaStore();
+            songAdapter = new SongAdapter(songList);
+            recyclerView.setAdapter(songAdapter);
+        }
+    }
+
+// Override the onRequestPermissionsResult() method to handle the permission result
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted, proceed with your logic to retrieve music files
+                songList = getMusicItemsFromMediaStore();
+                songAdapter = new SongAdapter(songList);
+                recyclerView.setAdapter(songAdapter);
+            } else {
+                // Permission denied, handle accordingly (e.g., show a message or disable the functionality)
+            }
+        }
+    }
+ */
+
+/* Custom RecyclerView with Adapter (Music Player)
+1. activity_music_player.xml (holds the recyclerview)
+2. item_song.xml (what each item in the recyclerview should look like, e.g. has image, text, etc...)
+3. Song.java (CUSTOM CLASS TO HOLD THE METADATA INFO)
+4. SongAdapter.java (sets the images, text)
  */

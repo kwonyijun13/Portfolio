@@ -16,6 +16,7 @@ import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.ViewFlipper;
 
+import com.example.portfolio.MusicPlayerActivity;
 import com.example.portfolio.R;
 import com.google.android.material.button.MaterialButton;
 
@@ -83,21 +84,17 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // NEW INTENT FOR FRAGMENT
-                FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment_container, new QRCodeScannerFragment());
-                transaction.addToBackStack(null);
-                transaction.commit();
+//                FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
+//                transaction.replace(R.id.fragment_container, new QRCodeScannerFragment());
+//                transaction.addToBackStack(null);
+//                transaction.commit();
             }
         });
 
         musicButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // NEW INTENT FOR FRAGMENT
-                FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment_container, new MusicFragment());
-                transaction.addToBackStack(null);
-                transaction.commit();
+                startActivity(new Intent(getActivity(), MusicPlayerActivity.class));
             }
         });
     }
