@@ -4,11 +4,13 @@ import android.graphics.Bitmap;
 
 // CUSTOM CLASS TO HOLD THE METADATA INFO
 public class Song {
-    private Bitmap albumImage; // Base64 encoded string of the album image
-    private String title; // Song title
-    private String artist; // Artist name
+    private Bitmap albumImage;
+    private String title;
+    private String artist;
+    private String filePath;
 
-    public Song(String id, Bitmap albumImage, String title, String artist) {
+    public Song(String filePath, Bitmap albumImage, String title, String artist) {
+        this.filePath = filePath;
         this.albumImage = albumImage;
         this.title = title;
         this.artist = artist;
@@ -24,5 +26,9 @@ public class Song {
 
     public String getArtist() {
         return artist;
+    }
+
+    public String getFilePath() {
+        return filePath;
     }
 }

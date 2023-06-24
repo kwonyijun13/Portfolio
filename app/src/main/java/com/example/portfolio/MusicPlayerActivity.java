@@ -11,6 +11,8 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,15 +30,16 @@ import java.util.List;
 
 import com.example.portfolio.adapters.SongAdapter;
 
-public class MusicPlayerActivity extends AppCompatActivity {
+// USE SONGADAPTER'S ITEMCLICKLISTENER (ONITEMCLICK() BELOW)
+public class MusicPlayerActivity extends AppCompatActivity implements SongAdapter.ItemClickListener{
 
     private RecyclerView recyclerView;
     private SongAdapter songAdapter;
     private List<Song> songList;
+    private MediaPlayer mediaPlayer;
 
     // ANY INTEGER VALUE CAN BE USED (UNIQUE)
     private static final int PERMISSION_REQUEST_CODE = 123;
-    private static final int REQUEST_CODE_OPEN_DOCUMENT_TREE = 456;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +97,8 @@ public class MusicPlayerActivity extends AppCompatActivity {
             songList = getMusicItemsFromMediaStore();
             songAdapter = new SongAdapter(songList);
             recyclerView.setAdapter(songAdapter);
+            // PLAY THE SELECTED MUSIC
+            songAdapter.setItemClickListener(this);
         }
     }
 
@@ -161,5 +166,25 @@ public class MusicPlayerActivity extends AppCompatActivity {
         }
 
         return songList;
+    }
+
+    @Override
+    public void onItemClick(int position, String fileName) {
+        Log.i("Kwon", "Working");
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+
+        mediaPlayer = new MediaPlayer();
+        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+
+        try {
+            mediaPlayer.setDataSource(fileName);
+            mediaPlayer.prepare();
+            mediaPlayer.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

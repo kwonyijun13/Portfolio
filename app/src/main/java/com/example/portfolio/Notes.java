@@ -425,4 +425,117 @@ private void requestStoragePermission() {
 2. item_song.xml (what each item in the recyclerview should look like, e.g. has image, text, etc...)
 3. Song.java (CUSTOM CLASS TO HOLD THE METADATA INFO)
 4. SongAdapter.java (sets the images, text)
+
+ONLY FETCHING AND DISPLAYING (NO ONCLICKLISTENER YET)
+SongAdapter.java
+package com.example.portfolio.adapters;
+
+import android.media.MediaPlayer;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.portfolio.R;
+import com.example.portfolio.Song;
+
+import java.util.List;
+
+public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
+    private List<Song> songList;
+
+    public SongAdapter(List<Song> songList) {
+        this.songList = songList;
+    }
+
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_song, parent, false);
+        return new ViewHolder(itemView);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Song song = songList.get(position);
+
+        // SET ALBUM IMAGE
+        if (song.getAlbumImage() != null) {
+            holder.albumImageView.setImageBitmap(song.getAlbumImage());
+        } else {
+            // Set a default image if album image is not available
+            holder.albumImageView.setImageResource(R.drawable.placeholder_album);
+        }
+
+        // SET TITLE & ARTIST
+        holder.titleTextView.setText(song.getTitle());
+        holder.artistTextView.setText(song.getArtist());
+    }
+
+    @Override
+    public int getItemCount() {
+        return songList.size();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        public ImageView albumImageView;
+        public TextView titleTextView;
+        public TextView artistTextView;
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            albumImageView = itemView.findViewById(R.id.album_image);
+            titleTextView = itemView.findViewById(R.id.song_title);
+            artistTextView = itemView.findViewById(R.id.artist_name);
+        }
+    }
+}
+
+
+ */
+
+/* POPUP MENU
+.xml
+<ImageView
+            android:id="@+id/sort_imageview"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:scaleType="center"
+            android:layout_weight="1"
+            android:src="@drawable/ic_sort"/>
+
+Activity.java
+sortButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // POPUP MENU
+                PopupMenu popupMenu = new PopupMenu(MusicPlayerActivity.this, sortButton);
+                // INFLATE THE MENU LAYOUT
+                popupMenu.getMenuInflater().inflate(R.menu.music_sort_menu, popupMenu.getMenu());
+
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        // Handle menu item clicks here
+                        if (item.getItemId() == R.id.sort_by_artist) {
+                            return true;
+                        } else if (item.getItemId() == R.id.sort_by_date) {
+                            return true;
+                        } else if (item.getItemId() == R.id.sort_by_date) {
+                            return true;
+                        }
+                        return false;
+                    }
+                });
+
+                // Show the PopupMenu
+                popupMenu.show();
+            }
+        });
  */
