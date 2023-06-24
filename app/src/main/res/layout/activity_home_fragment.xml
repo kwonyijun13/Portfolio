@@ -6,158 +6,175 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:padding="20dp">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <TextView
-            android:text="Welcome to Kwon Yi Jun's portfolio app!"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20dp"
-            android:gravity="center"/>
-
-        <TextView
-            android:text="Swipe to see kittens!"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"/>
-
-        <androidx.constraintlayout.motion.widget.MotionLayout
-            android:id="@+id/motionLayout"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            app:layoutDescription="@xml/scene_01">
-
-            <ImageView
-                android:id="@+id/carouselImageView"
-                android:layout_height="match_parent"
-                android:layout_width="match_parent"/>
-
-            <androidx.constraintlayout.helper.widget.Carousel
-                android:id="@+id/carousel"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                app:carousel_forwardTransition="@+id/forward"
-                app:carousel_backwardTransition="@+id/backward"
-                app:carousel_previousState="@+id/previous"
-                app:carousel_nextState="@+id/next"
-                app:carousel_infinite="true"
-                app:constraint_referenced_ids="carouselImageView"/>
-
-        </androidx.constraintlayout.motion.widget.MotionLayout>
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/qrMaterialButton"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:padding="10dp"
-                android:layout_weight="1"
-                android:layout_marginRight="10dp"
-                android:text="QR CODE SCANNER"
-                android:maxLines="1"
-                android:backgroundTint="@color/black"
-                app:strokeColor="@color/sky_blue"
-                app:strokeWidth="2dp"
-                app:icon="@drawable/ic_qr_scanner"
-                app:iconGravity="top"
-                app:iconSize="80dp">
+            <TextView
+                android:text="Welcome to Kwon Yi Jun's portfolio app!"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:gravity="center"/>
 
-                <!-- Used layout_weight="1" & width="0" to make them equal -->
+            <TextView
+                android:text="Swipe to see kittens!"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"/>
 
-            </com.google.android.material.button.MaterialButton>
+            <androidx.constraintlayout.motion.widget.MotionLayout
+                android:id="@+id/motionLayout"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                app:layoutDescription="@xml/scene_01">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/gpsMaterialButton"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:padding="10dp"
-                android:layout_weight="1"
-                android:layout_marginLeft="10dp"
-                android:text="GPS"
-                android:maxLines="1"
-                android:backgroundTint="@color/black"
-                app:strokeColor="@color/light_green"
-                app:strokeWidth="2dp"
-                app:icon="@drawable/ic_gps"
-                app:iconGravity="top"
-                app:iconSize="80dp"/>
+                <ImageView
+                    android:id="@+id/carouselImageView"
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"/>
+
+                <androidx.constraintlayout.helper.widget.Carousel
+                    android:id="@+id/carousel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    app:carousel_forwardTransition="@+id/forward"
+                    app:carousel_backwardTransition="@+id/backward"
+                    app:carousel_previousState="@+id/previous"
+                    app:carousel_nextState="@+id/next"
+                    app:carousel_infinite="true"
+                    app:constraint_referenced_ids="carouselImageView"/>
+
+            </androidx.constraintlayout.motion.widget.MotionLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/qrMaterialButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="10dp"
+                    android:text="QR CODE SCANNER"
+                    android:maxLines="1"
+                    android:backgroundTint="@color/black"
+                    app:strokeColor="@color/sky_blue"
+                    app:strokeWidth="2dp"
+                    app:icon="@drawable/ic_qr_scanner"
+                    app:iconGravity="top"
+                    app:iconSize="80dp">
+
+                    <!-- Used layout_weight="1" & width="0" to make them equal -->
+
+                </com.google.android.material.button.MaterialButton>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/gpsMaterialButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="10dp"
+                    android:text="GPS"
+                    android:maxLines="1"
+                    android:backgroundTint="@color/black"
+                    app:strokeColor="@color/light_green"
+                    app:strokeWidth="2dp"
+                    app:icon="@drawable/ic_gps"
+                    app:iconGravity="top"
+                    app:iconSize="80dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/youtubeConverterMaterialButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="10dp"
+                    android:text="YOUTUBE CONVERTER"
+                    android:maxLines="1"
+                    android:backgroundTint="@color/black"
+                    app:strokeColor="@color/light_red"
+                    app:strokeWidth="2dp"
+                    app:icon="@drawable/ic_youtube"
+                    app:iconGravity="top"
+                    app:iconSize="80dp">
+
+                </com.google.android.material.button.MaterialButton>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/musicMaterialButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="10dp"
+                    android:text="MUSIC LIBRARY"
+                    android:maxLines="1"
+                    android:backgroundTint="@color/black"
+                    app:strokeColor="@color/pink"
+                    app:strokeWidth="2dp"
+                    app:icon="@drawable/ic_music_library"
+                    app:iconGravity="top"
+                    app:iconSize="80dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/gameMaterialButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:layout_weight="1"
+                    android:text="GAMES"
+                    android:maxLines="1"
+                    android:backgroundTint="@color/black"
+                    app:strokeColor="@color/dark_blue"
+                    app:strokeWidth="2dp"
+                    app:icon="@drawable/ic_games"
+                    app:iconGravity="top"
+                    app:iconSize="80dp">
+
+                </com.google.android.material.button.MaterialButton>
+
+            </LinearLayout>
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/youtubeConverterMaterialButton"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:padding="10dp"
-                android:layout_weight="1"
-                android:layout_marginRight="10dp"
-                android:text="YOUTUBE CONVERTER"
-                android:maxLines="1"
-                android:backgroundTint="@color/black"
-                app:strokeColor="@color/light_red"
-                app:strokeWidth="2dp"
-                app:icon="@drawable/ic_youtube"
-                app:iconGravity="top"
-                app:iconSize="80dp">
-
-            </com.google.android.material.button.MaterialButton>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/musicMaterialButton"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:padding="10dp"
-                android:layout_weight="1"
-                android:layout_marginLeft="10dp"
-                android:text="MUSIC LIBRARY"
-                android:maxLines="1"
-                android:backgroundTint="@color/black"
-                app:strokeColor="@color/pink"
-                app:strokeWidth="2dp"
-                app:icon="@drawable/ic_music_library"
-                app:iconGravity="top"
-                app:iconSize="80dp"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/gameMaterialButton"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:padding="10dp"
-                android:layout_weight="1"
-                android:text="GAMES"
-                android:maxLines="1"
-                android:backgroundTint="@color/black"
-                app:strokeColor="@color/dark_blue"
-                app:strokeWidth="2dp"
-                app:icon="@drawable/ic_games"
-                app:iconGravity="top"
-                app:iconSize="80dp">
-
-            </com.google.android.material.button.MaterialButton>
-
-
-        </LinearLayout>
-
-    </LinearLayout>
-
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

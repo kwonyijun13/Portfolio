@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.ViewFlipper;
 
 import com.example.portfolio.MusicPlayerActivity;
@@ -27,6 +28,8 @@ import java.util.TimerTask;
 
 public class HomeFragment extends Fragment {
 
+    private ProgressBar progressBar;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -38,12 +41,15 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        progressBar = view.findViewById(R.id.progress_bar);
         MaterialButton qrButton = view.findViewById(R.id.qrMaterialButton);
         MaterialButton gpsButton = view.findViewById(R.id.gpsMaterialButton);
         MaterialButton youtubeButton = view.findViewById(R.id.youtubeConverterMaterialButton);
         MaterialButton musicButton = view.findViewById(R.id.musicMaterialButton);
         MaterialButton gameButton = view.findViewById(R.id.gameMaterialButton);
         Carousel carousel = view.findViewById(R.id.carousel);
+
+        progressBar.setVisibility(View.INVISIBLE);
 
         // CUSTOM FONT
         Typeface customFont = Typeface.createFromAsset(view.getResources().getAssets(), "fonts/CoffeeHealing-1GrKe.ttf");
@@ -83,21 +89,26 @@ public class HomeFragment extends Fragment {
         qrButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // NEW INTENT FOR FRAGMENT
-//                FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
-//                transaction.replace(R.id.fragment_container, new QRCodeScannerFragment());
-//                transaction.addToBackStack(null);
-//                transaction.commit();
+                progressBar.setVisibility(View.VISIBLE);
             }
         });
 
         musicButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                progressBar.setVisibility(View.VISIBLE);
                 startActivity(new Intent(getActivity(), MusicPlayerActivity.class));
             }
         });
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        progressBar.setVisibility(View.GONE);
+    }
+
 }
 
 /*
