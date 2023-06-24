@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.portfolio.R;
 import com.example.portfolio.Song;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
@@ -54,6 +56,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
     // WHEN USER PRESSES THE SONG
     public void setItemClickListener(ItemClickListener itemClickListener) {
         this.itemClickListener = itemClickListener;
+
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -77,8 +80,8 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
                         if (position != RecyclerView.NO_POSITION && itemClickListener != null) {
                             // Pass the position and filename to the item click listener
                             Song song = songList.get(position);
-                            String filename = song.getFilePath(); // Replace with the appropriate method to get the file path from the Song object
-                            itemClickListener.onItemClick(position, filename);
+                            String filename = song.getFilePath();
+                            itemClickListener.onItemClick(position, filename, albumImageView, titleTextView, artistTextView);
                         }
                     }
                 }
@@ -88,6 +91,6 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
 
     // Item click listener interface
     public interface ItemClickListener {
-        void onItemClick(int position, String filename);
+        void onItemClick(int position, String filename, ImageView imageView, TextView title, TextView artist);
     }
 }

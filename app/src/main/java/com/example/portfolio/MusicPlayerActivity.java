@@ -18,10 +18,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.provider.MediaStore;
 import android.database.Cursor;
+import android.widget.TextView;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.portfolio.adapters.SongAdapter;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 // USE SONGADAPTER'S ITEMCLICKLISTENER (ONITEMCLICK() BELOW)
 public class MusicPlayerActivity extends AppCompatActivity implements SongAdapter.ItemClickListener{
@@ -37,6 +41,11 @@ public class MusicPlayerActivity extends AppCompatActivity implements SongAdapte
     private SongAdapter songAdapter;
     private List<Song> songList;
     private MediaPlayer mediaPlayer;
+    private Bitmap albumArt;
+    private LinearLayout bottomMusicView;
+    private ImageView albumImage;
+    private TextView titleTextView, artistTextView;
+    private ImageButton pauseButton, previousButton, nextButton;
 
     // ANY INTEGER VALUE CAN BE USED (UNIQUE)
     private static final int PERMISSION_REQUEST_CODE = 123;
@@ -48,6 +57,13 @@ public class MusicPlayerActivity extends AppCompatActivity implements SongAdapte
 
         ImageView sortButton = findViewById(R.id.sort_imageview);
         recyclerView = findViewById(R.id.recyclerView);
+        bottomMusicView = findViewById(R.id.custom_bottom_view);
+        albumImage = findViewById(R.id.album_image);
+        titleTextView = findViewById(R.id.song_title);
+        artistTextView = findViewById(R.id.artist_name);
+        pauseButton = findViewById(R.id.button_play_pause);
+        previousButton = findViewById(R.id.button_previous);
+        nextButton = findViewById(R.id.button_next);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -118,6 +134,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements SongAdapte
         }
     }
 
+    // RETRIEVE MP3 FILES' COLUMN VALUES (ID, TITLE, ARTIST, ETC) FROM THE CURSOR TO CREATE SONG OBJECTS
     private List<Song> getMusicItemsFromMediaStore() {
         List<Song> songList = new ArrayList<>();
         // ADD MORE IF NEEDED
@@ -135,23 +152,29 @@ public class MusicPlayerActivity extends AppCompatActivity implements SongAdapte
                 sortOrder
         );
 
+        // CURSOR IS THE RESULT SET OF A DATABASE QUERY ↑ (IN THIS CASE, ALL THE MP3 FILES)
         if (cursor != null) {
+            // getColumnIndexOrThrow() RETRIEVES THE INDEX OF A COLUMN IN THE CURSOR
             int filePathColumnIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA);
             int albumIdColumnIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID);
             int titleColumnIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE);
             int artistColumnIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST);
-
+            // ITERATE OVER EACH ROW IN THE CURSOR RESULT SET
             while (cursor.moveToNext()) {
+                // RETRIEVE THE VALUES FROM THE COLUMNS
                 String filePath = cursor.getString(filePathColumnIndex);
                 long albumId = cursor.getLong(albumIdColumnIndex);
                 String title = cursor.getString(titleColumnIndex);
                 String artist = cursor.getString(artistColumnIndex);
 
-                // Retrieve the album art using the album ID
+                // RETRIEVE ALBUM ART USING ALBUM ID
+                // content://media/external/audio/albumart/ : THIS IS THE LOCATION OF THE ALBUM ART
                 Uri albumArtUri = Uri.parse("content://media/external/audio/albumart/" + albumId);
-                Bitmap albumArt = null;
+                albumArt = null;
                 try {
+                    // LOAD THE ALBUM ART INTO A BITMAP OBJECT BY USING openInputStream()
                     InputStream inputStream = getContentResolver().openInputStream(albumArtUri);
+                    // DECODE IT USING decodeStream()
                     albumArt = BitmapFactory.decodeStream(inputStream);
                     inputStream.close();
                 } catch (IOException e) {
@@ -161,21 +184,23 @@ public class MusicPlayerActivity extends AppCompatActivity implements SongAdapte
                 Song song = new Song(filePath, albumArt, title, artist);
                 songList.add(song);
             }
-
+            // CLOSE THE CURSOR TO RELEASE THE ASSOCIATED RESOURCES
             cursor.close();
         }
-
+        // SONGLIST NOW CONTAINS ALL THE SONGS
         return songList;
     }
 
+    // PASSED FROM SONGADAPTER.JAVA'S INTERFACE
     @Override
-    public void onItemClick(int position, String fileName) {
-        Log.i("Kwon", "Working");
+    public void onItemClick(int position, String fileName, ImageView imageView, TextView title, TextView artist) {
+        // CHECK IF THERE IS AN AUDIO ALREADY PLAYING
         if (mediaPlayer != null) {
             mediaPlayer.release();
             mediaPlayer = null;
         }
 
+        // CREATE A NEW INSTANCE OF MEDIAPLAYER TO PLAY NEW SONG
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 
@@ -183,8 +208,61 @@ public class MusicPlayerActivity extends AppCompatActivity implements SongAdapte
             mediaPlayer.setDataSource(fileName);
             mediaPlayer.prepare();
             mediaPlayer.start();
+
+            //showBottomPopupView(songList.get(position));
+            bottomMusicView.setVisibility(View.VISIBLE);
+            albumImage.setImageDrawable(imageView.getDrawable());
+            titleTextView.setText(title.getText().toString());
+            artistTextView.setText(artist.getText().toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    // IF THERE IS A SONG PLAYING, CALL THIS
+//    private void showBottomPopupView(Song song) {
+//        View bottomPopupView = getLayoutInflater().inflate(R.layout.layout_bottom_music_popup, null);
+//
+//        // Create a BottomSheetDialog with your custom layout
+////        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+////        bottomSheetDialog.setContentView(R.layout.layout_bottom_music_popup);
+//
+//        // Initialize views in the bottom popup view
+//        ImageView albumImageView = bottomPopupView.findViewById(R.id.album_image);
+//        TextView titleTextView = bottomPopupView.findViewById(R.id.song_title);
+//        TextView artistTextView = bottomPopupView.findViewById(R.id.artist_name);
+//        ImageButton previousButton = bottomPopupView.findViewById(R.id.button_previous);
+//        ImageButton playPauseButton = bottomPopupView.findViewById(R.id.button_play_pause);
+//        ImageButton nextButton = bottomPopupView.findViewById(R.id.button_next);
+//
+//        // Set the song details in the views
+//        albumImageView.setImageBitmap(song.getAlbumImage());
+//        titleTextView.setText(song.getTitle());
+//        artistTextView.setText(song.getArtist());
+//
+//        // Set click listeners for the buttons
+//        previousButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // Handle previous button click
+//            }
+//        });
+//
+//        playPauseButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // Handle play/pause button click
+//            }
+//        });
+//
+//        nextButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // Handle next button click
+//            }
+//        });
+//
+//        bottomSheetDialog.show();
+//    }
+
 }
