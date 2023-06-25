@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:text="Music Player"
             android:textColor="@color/white"
-            android:textSize="40dp"
+            android:textSize="30dp"
             android:fontFamily="@font/coffee_healing"/>
 
     </androidx.appcompat.widget.Toolbar>
@@ -71,6 +71,17 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/totalCountTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Total Songs Found ()"
+        android:fontFamily="@font/coffee_healing"
+        android:layout_marginLeft="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchbar_linearlayout"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
@@ -79,7 +90,7 @@
         android:clickable="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchbar_linearlayout">
+        app:layout_constraintTop_toBottomOf="@+id/totalCountTextView">
 
     </androidx.recyclerview.widget.RecyclerView>
 

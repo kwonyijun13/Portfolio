@@ -45,7 +45,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements SongAdapte
     private Bitmap albumArt;
     private LinearLayout bottomMusicView;
     private ImageView albumImage;
-    private TextView titleTextView, artistTextView;
+    private TextView titleTextView, artistTextView, totalCountTextView;
     private ImageButton pauseButton, previousButton, nextButton;
     private EditText searchEditText;
     private boolean isPlaying = false;
@@ -69,6 +69,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements SongAdapte
         previousButton = findViewById(R.id.button_previous);
         nextButton = findViewById(R.id.button_next);
         searchEditText = findViewById(R.id.search_input);
+        totalCountTextView = findViewById(R.id.totalCountTextView);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -145,6 +146,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements SongAdapte
         });
     }
 
+    // ༼ つ ◕_◕ ༽つ PERMISSIONS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     private void requestStoragePermission() {
         // Check if the permission is already granted
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -155,7 +157,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements SongAdapte
                     PERMISSION_REQUEST_CODE);
         } else {
             // Permission is already granted
-            // Proceed with your logic to retrieve music files
+            // RETRIEVE MUSIC FILES
             songList = getMusicItemsFromMediaStore();
             songAdapter = new SongAdapter(songList);
             recyclerView.setAdapter(songAdapter);
@@ -180,7 +182,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements SongAdapte
         }
     }
 
-    // RETRIEVE MP3 FILES' COLUMN VALUES (ID, TITLE, ARTIST, ETC) FROM THE CURSOR TO CREATE SONG OBJECTS
+    // ༼ つ ◕_◕ ༽つ RETRIEVE MP3 FILES' COLUMN VALUES (ID, TITLE, ARTIST, ETC) FROM THE CURSOR TO CREATE SONG OBJECTS
     private List<Song> getMusicItemsFromMediaStore() {
         List<Song> songList = new ArrayList<>();
         // ADD MORE IF NEEDED
@@ -223,6 +225,8 @@ public class MusicPlayerActivity extends AppCompatActivity implements SongAdapte
                     // DECODE IT USING decodeStream()
                     albumArt = BitmapFactory.decodeStream(inputStream);
                     inputStream.close();
+                    // TOTAL COUNT OF SONGS FOUND
+                    totalCountTextView.setText("Total songs found (" + songList.size() + ")");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -240,7 +244,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements SongAdapte
     // PASSED FROM SONGADAPTER.JAVA'S INTERFACE
     @Override
     public void onItemClick(int position, String fileName, ImageView imageView, TextView title, TextView artist) {
-        // SET CURRENT SONG'S POSITION TO CURRENTSONGPOSITION
+        // SET SELECTED SONG'S POSITION TO CURRENTSONGPOSITION
         currentSongPosition = position;
 
         bottomMusicView.setVisibility(View.VISIBLE);
@@ -291,6 +295,8 @@ public class MusicPlayerActivity extends AppCompatActivity implements SongAdapte
         artistTextView.setText(song.getArtist());
     }
 
+
+    // ༼ つ ◕_◕ ༽つ OPTIONS MENU >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     // PASSED FROM SONGADAPTER.JAVA'S INTERFACE
     @Override
     public void onOptionsIconClick(int position, String fileName) {
