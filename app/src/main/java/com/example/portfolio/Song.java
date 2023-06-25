@@ -8,12 +8,14 @@ public class Song {
     private String title;
     private String artist;
     private String filePath;
+    private int duration;
 
-    public Song(String filePath, Bitmap albumImage, String title, String artist) {
+    public Song(String filePath, Bitmap albumImage, String title, String artist, int duration) {
         this.filePath = filePath;
         this.albumImage = albumImage;
         this.title = title;
         this.artist = artist;
+        this.duration = duration;
     }
 
     public Bitmap getAlbumImage() {
@@ -30,5 +32,9 @@ public class Song {
 
     public String getFilePath() {
         return filePath;
+    }
+    // USED IN SONGADAPTER
+    public int getDuration() {
+        return duration;
     }
 }

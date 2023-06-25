@@ -15,6 +15,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.provider.MediaStore;
 import android.database.Cursor;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -42,14 +44,15 @@ public class MusicPlayerActivity extends AppCompatActivity implements SongAdapte
     private SongAdapter songAdapter;
     private List<Song> songList;
     private MediaPlayer mediaPlayer;
-    private Bitmap albumArt;
     private LinearLayout bottomMusicView;
     private ImageView albumImage;
     private TextView titleTextView, artistTextView, totalCountTextView;
     private ImageButton pauseButton, previousButton, nextButton;
     private EditText searchEditText;
     private boolean isPlaying = false;
-    private int currentSongPosition = -1;
+    private int currentSongPosition = -1, newSongTiming;
+    private SeekBar seekbar;
+    private int songDuration;
 
     // ANY INTEGER VALUE CAN BE USED (UNIQUE)
     private static final int PERMISSION_REQUEST_CODE = 123;
@@ -70,6 +73,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements SongAdapte
         nextButton = findViewById(R.id.button_next);
         searchEditText = findViewById(R.id.search_input);
         totalCountTextView = findViewById(R.id.totalCountTextView);
+        seekbar = findViewById(R.id.seek_bar);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -130,7 +134,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements SongAdapte
             public void onClick(View view) {
                 if (currentSongPosition > 0) {
                     currentSongPosition--;
-                    playSongAtIndex(currentSongPosition);
+                    playSongAtIndex(currentSongPosition, songDuration);
                 }
             }
         });
@@ -140,7 +144,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements SongAdapte
             public void onClick(View view) {
                 if (currentSongPosition < songList.size() - 1) {
                     currentSongPosition++;
-                    playSongAtIndex(currentSongPosition);
+                    playSongAtIndex(currentSongPosition, songDuration);
                 }
             }
         });
@@ -186,9 +190,11 @@ public class MusicPlayerActivity extends AppCompatActivity implements SongAdapte
     private List<Song> getMusicItemsFromMediaStore() {
         List<Song> songList = new ArrayList<>();
         // ADD MORE IF NEEDED
-        String[] projection = {MediaStore.Audio.Media._ID, MediaStore.Audio.Media.DATA, MediaStore.Audio.Media.ALBUM_ID, MediaStore.Audio.Media.TITLE, MediaStore.Audio.Media.ARTIST};
+        String[] projection = {MediaStore.Audio.Media._ID, MediaStore.Audio.Media.DATA, MediaStore.Audio.Media.ALBUM_ID, MediaStore.Audio.Media.TITLE, MediaStore.Audio.Media.ARTIST
+        , MediaStore.Audio.Media.DURATION};
         // RETRIEVE ONLY MP3 FILES
         String selection = MediaStore.Audio.Media.IS_MUSIC + "!= 0";
+        // SET ORDER
         String sortOrder = MediaStore.Audio.Media.TITLE + " ASC";
 
         // Perform the query to retrieve the music items
@@ -207,6 +213,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements SongAdapte
             int albumIdColumnIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID);
             int titleColumnIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE);
             int artistColumnIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST);
+            int durationColumnIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION);
             // ITERATE OVER EACH ROW IN THE CURSOR RESULT SET
             while (cursor.moveToNext()) {
                 // RETRIEVE THE VALUES FROM THE COLUMNS
@@ -214,11 +221,12 @@ public class MusicPlayerActivity extends AppCompatActivity implements SongAdapte
                 long albumId = cursor.getLong(albumIdColumnIndex);
                 String title = cursor.getString(titleColumnIndex);
                 String artist = cursor.getString(artistColumnIndex);
+                int duration = cursor.getInt(durationColumnIndex);
 
                 // RETRIEVE ALBUM ART USING ALBUM ID
                 // content://media/external/audio/albumart/ : THIS IS THE LOCATION OF THE ALBUM ART
                 Uri albumArtUri = Uri.parse("content://media/external/audio/albumart/" + albumId);
-                albumArt = null;
+                Bitmap albumArt = null;
                 try {
                     // LOAD THE ALBUM ART INTO A BITMAP OBJECT BY USING openInputStream()
                     InputStream inputStream = getContentResolver().openInputStream(albumArtUri);
@@ -231,7 +239,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements SongAdapte
                     e.printStackTrace();
                 }
 
-                Song song = new Song(filePath, albumArt, title, artist);
+                Song song = new Song(filePath, albumArt, title, artist, duration);
                 songList.add(song);
             }
             // CLOSE THE CURSOR TO RELEASE THE ASSOCIATED RESOURCES
@@ -243,7 +251,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements SongAdapte
 
     // PASSED FROM SONGADAPTER.JAVA'S INTERFACE
     @Override
-    public void onItemClick(int position, String fileName, ImageView imageView, TextView title, TextView artist) {
+    public void onItemClick(int position, String fileName, ImageView imageView, TextView title, TextView artist, int duration) {
         // SET SELECTED SONG'S POSITION TO CURRENTSONGPOSITION
         currentSongPosition = position;
 
@@ -253,12 +261,34 @@ public class MusicPlayerActivity extends AppCompatActivity implements SongAdapte
         artistTextView.setText(artist.getText().toString());
 
         // Call playSongAtIndex() to play the selected song
-        playSongAtIndex(currentSongPosition);
+        playSongAtIndex(currentSongPosition, duration);
 
         updateUIWithCurrentSong();
+
+        // SEEKBAR
+        seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                // Update the current position of the song if the change is from the user
+                if (fromUser) {
+                    newSongTiming = seekbar.getProgress();
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                mediaPlayer.pause();
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                mediaPlayer.seekTo(newSongTiming);
+                mediaPlayer.start();
+            }
+        });
     }
 
-    private void playSongAtIndex(int position) {
+    private void playSongAtIndex(int position, int duration) {
         // CHECK IF THERE IS AN AUDIO ALREADY PLAYING
         if (mediaPlayer != null) {
             mediaPlayer.release();
@@ -285,6 +315,24 @@ public class MusicPlayerActivity extends AppCompatActivity implements SongAdapte
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        // ༼ つ ◕_◕ ༽つ SEEKBAR
+        // SET SELECTED SONG'S DURATION TO SONGDURATION
+        songDuration = duration;
+        seekbar.setMax(songDuration);
+
+        Handler handler = new Handler();
+        Runnable updateSeekBar = new Runnable() {
+            @Override
+            public void run() {
+                int currentTimePosition = mediaPlayer.getCurrentPosition();
+                seekbar.setProgress(currentTimePosition);
+                handler.postDelayed(this, 100);  // Update every 100 milliseconds
+            }
+        };
+
+        // Start updating the SeekBar when the song starts playing
+        handler.postDelayed(updateSeekBar, 100);
     }
 
     private void updateUIWithCurrentSong() {
@@ -303,7 +351,6 @@ public class MusicPlayerActivity extends AppCompatActivity implements SongAdapte
         // Show the bottom popup view for editing the MP3 file
         showBottomPopupView(songList.get(position));
     }
-
 
     // BOTTOM POPUP VIEW
     private void showBottomPopupView(Song song) {

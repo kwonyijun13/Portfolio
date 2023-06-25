@@ -70,6 +70,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
             artistTextView = itemView.findViewById(R.id.artist_name);
             sortImageView = itemView.findViewById(R.id.sort_imageview);
 
+            // OPTIONS MENU
             sortImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -95,7 +96,8 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
                             // Pass the position and filename to the item click listener
                             Song song = songList.get(position);
                             String filename = song.getFilePath();
-                            itemClickListener.onItemClick(position, filename, albumImageView, titleTextView, artistTextView);
+                            int duration = song.getDuration();
+                            itemClickListener.onItemClick(position, filename, albumImageView, titleTextView, artistTextView, duration);
                         }
                     }
                 }
@@ -105,7 +107,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
 
     // Item click listener interface
     public interface ItemClickListener {
-        void onItemClick(int position, String filename, ImageView imageView, TextView title, TextView artist);
+        void onItemClick(int position, String filename, ImageView imageView, TextView title, TextView artist, int duration);
         void onOptionsIconClick(int position, String filename);
     }
 }
