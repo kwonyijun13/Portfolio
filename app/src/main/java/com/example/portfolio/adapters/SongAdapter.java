@@ -19,7 +19,6 @@ import java.util.List;
 public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
     private List<Song> songList;
     private ItemClickListener itemClickListener;
-
     public SongAdapter(List<Song> songList) {
         this.songList = songList;
     }
@@ -56,11 +55,10 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
     // WHEN USER PRESSES THE SONG
     public void setItemClickListener(ItemClickListener itemClickListener) {
         this.itemClickListener = itemClickListener;
-
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public ImageView albumImageView;
+        public ImageView albumImageView, sortImageView;
         public TextView titleTextView;
         public TextView artistTextView;
 
@@ -69,6 +67,21 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
             albumImageView = itemView.findViewById(R.id.album_image);
             titleTextView = itemView.findViewById(R.id.song_title);
             artistTextView = itemView.findViewById(R.id.artist_name);
+            sortImageView = itemView.findViewById(R.id.sort_imageview);
+
+            sortImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (itemClickListener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            Song song = songList.get(position);
+                            String filename = song.getFilePath();
+                            itemClickListener.onOptionsIconClick(position, filename);
+                        }
+                    }
+                }
+            });
 
             // Set click listener for the itemView
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -92,5 +105,6 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
     // Item click listener interface
     public interface ItemClickListener {
         void onItemClick(int position, String filename, ImageView imageView, TextView title, TextView artist);
+        void onOptionsIconClick(int position, String filename);
     }
 }

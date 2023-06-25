@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -46,6 +47,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements SongAdapte
     private ImageView albumImage;
     private TextView titleTextView, artistTextView;
     private ImageButton pauseButton, previousButton, nextButton;
+    private EditText searchEditText;
 
     // ANY INTEGER VALUE CAN BE USED (UNIQUE)
     private static final int PERMISSION_REQUEST_CODE = 123;
@@ -64,6 +66,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements SongAdapte
         pauseButton = findViewById(R.id.button_play_pause);
         previousButton = findViewById(R.id.button_previous);
         nextButton = findViewById(R.id.button_next);
+        searchEditText = findViewById(R.id.search_input);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -209,7 +212,6 @@ public class MusicPlayerActivity extends AppCompatActivity implements SongAdapte
             mediaPlayer.prepare();
             mediaPlayer.start();
 
-            //showBottomPopupView(songList.get(position));
             bottomMusicView.setVisibility(View.VISIBLE);
             albumImage.setImageDrawable(imageView.getDrawable());
             titleTextView.setText(title.getText().toString());
@@ -219,50 +221,30 @@ public class MusicPlayerActivity extends AppCompatActivity implements SongAdapte
         }
     }
 
-    // IF THERE IS A SONG PLAYING, CALL THIS
-//    private void showBottomPopupView(Song song) {
-//        View bottomPopupView = getLayoutInflater().inflate(R.layout.layout_bottom_music_popup, null);
-//
-//        // Create a BottomSheetDialog with your custom layout
-////        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
-////        bottomSheetDialog.setContentView(R.layout.layout_bottom_music_popup);
-//
-//        // Initialize views in the bottom popup view
-//        ImageView albumImageView = bottomPopupView.findViewById(R.id.album_image);
-//        TextView titleTextView = bottomPopupView.findViewById(R.id.song_title);
-//        TextView artistTextView = bottomPopupView.findViewById(R.id.artist_name);
-//        ImageButton previousButton = bottomPopupView.findViewById(R.id.button_previous);
-//        ImageButton playPauseButton = bottomPopupView.findViewById(R.id.button_play_pause);
-//        ImageButton nextButton = bottomPopupView.findViewById(R.id.button_next);
-//
-//        // Set the song details in the views
-//        albumImageView.setImageBitmap(song.getAlbumImage());
-//        titleTextView.setText(song.getTitle());
-//        artistTextView.setText(song.getArtist());
-//
-//        // Set click listeners for the buttons
-//        previousButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // Handle previous button click
-//            }
-//        });
-//
-//        playPauseButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // Handle play/pause button click
-//            }
-//        });
-//
-//        nextButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // Handle next button click
-//            }
-//        });
-//
-//        bottomSheetDialog.show();
-//    }
+    // PASSED FROM SONGADAPTER.JAVA'S INTERFACE
+    @Override
+    public void onOptionsIconClick(int position, String fileName) {
+        // Show the bottom popup view for editing the MP3 file
+        showBottomPopupView(songList.get(position));
+    }
 
+
+    // BOTTOM POPUP VIEW
+    private void showBottomPopupView(Song song) {
+        // Create a BottomSheetDialog with your custom layout
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        bottomSheetDialog.setContentView(R.layout.layout_bottom_music_popup);
+
+        // Initialize views in the bottom popup view
+        ImageView albumImageView = bottomSheetDialog.findViewById(R.id.album_image);
+        TextView titleTextView = bottomSheetDialog.findViewById(R.id.song_title);
+        TextView artistTextView = bottomSheetDialog.findViewById(R.id.artist_name);
+
+        // Set the song details in the views
+        albumImageView.setImageBitmap(song.getAlbumImage());
+        titleTextView.setText(song.getTitle());
+        artistTextView.setText(song.getArtist());
+
+        bottomSheetDialog.show();
+    }
 }

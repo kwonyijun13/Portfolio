@@ -539,3 +539,125 @@ sortButton.setOnClickListener(new View.OnClickListener() {
             }
         });
  */
+
+/* Bottom Popup View
+First make a .xml for the popup view, example:
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/light_grey">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/album_image"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_margin="10dp"
+            android:src="@drawable/placeholder_album" />
+
+        <LinearLayout
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/song_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"/>
+
+            <TextView
+                android:id="@+id/artist_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:layout_marginLeft="10dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="———————————————————————————————————"
+        android:textAlignment="center" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/addToPlaylistImageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_add_to_playlist"/>
+
+        <TextView
+            android:id="@+id/addToPlaylistTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:text="Add to playlist"
+            android:textSize="20dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/deleteImageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_delete"/>
+
+        <TextView
+            android:id="@+id/deleteTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:text="Delete from device"
+            android:textSize="20dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>
+
+For music, includes the SongAdapter
+Activity.java
+private void showBottomPopupView(Song song) {
+        // Create a BottomSheetDialog with your custom layout
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        bottomSheetDialog.setContentView(R.layout.layout_bottom_music_popup);
+
+        // Initialize views in the bottom popup view
+        ImageView albumImageView = bottomSheetDialog.findViewById(R.id.album_image);
+        TextView titleTextView = bottomSheetDialog.findViewById(R.id.song_title);
+        TextView artistTextView = bottomSheetDialog.findViewById(R.id.artist_name);
+
+        // Set the song details in the views
+        albumImageView.setImageBitmap(song.getAlbumImage());
+        titleTextView.setText(song.getTitle());
+        artistTextView.setText(song.getArtist());
+
+        bottomSheetDialog.show();
+    }
+ */
