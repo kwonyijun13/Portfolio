@@ -37,9 +37,8 @@ import java.util.List;
 import com.example.portfolio.adapters.SongAdapter;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
-// USE SONGADAPTER'S ITEMCLICKLISTENER (ONITEMCLICK() BELOW)
+// USING SONGADAPTER'S ITEMCLICKLISTENER (ONITEMCLICK() BELOW)
 public class MusicPlayerActivity extends AppCompatActivity implements SongAdapter.ItemClickListener{
-
     private RecyclerView recyclerView;
     private SongAdapter songAdapter;
     private List<Song> songList;
@@ -53,7 +52,6 @@ public class MusicPlayerActivity extends AppCompatActivity implements SongAdapte
     private int currentSongPosition = -1, newSongTiming;
     private SeekBar seekbar;
     private int songDuration;
-
     // ANY INTEGER VALUE CAN BE USED (UNIQUE)
     private static final int PERMISSION_REQUEST_CODE = 123;
 
@@ -80,6 +78,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements SongAdapte
         // REQUEST PERMISSION TO STORAGE
         requestStoragePermission();
 
+        // SORT MENU
         sortButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -108,6 +107,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements SongAdapte
             }
         });
 
+        // BUTTONS IN THE BOTTOM VIEW
         pauseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -152,15 +152,11 @@ public class MusicPlayerActivity extends AppCompatActivity implements SongAdapte
 
     // ༼ つ ◕_◕ ༽つ PERMISSIONS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     private void requestStoragePermission() {
-        // Check if the permission is already granted
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            // Permission is not granted, request it
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                    PERMISSION_REQUEST_CODE);
+        // CHECK IF PERMISSION HAS BEEN GRANTED
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            // REQUEST FOR PERMISSION
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
         } else {
-            // Permission is already granted
             // RETRIEVE MUSIC FILES
             songList = getMusicItemsFromMediaStore();
             songAdapter = new SongAdapter(songList);
@@ -186,7 +182,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements SongAdapte
         }
     }
 
-    // ༼ つ ◕_◕ ༽つ RETRIEVE MP3 FILES' COLUMN VALUES (ID, TITLE, ARTIST, ETC) FROM THE CURSOR TO CREATE SONG OBJECTS
+    // ༼ つ ◕_◕ ༽つ RETRIEVE MP3 FILES' COLUMN VALUES (ID, TITLE, ETC) FROM THE CURSOR TO CREATE SONG OBJECTS
     private List<Song> getMusicItemsFromMediaStore() {
         List<Song> songList = new ArrayList<>();
         // ADD MORE IF NEEDED
@@ -197,18 +193,12 @@ public class MusicPlayerActivity extends AppCompatActivity implements SongAdapte
         // SET ORDER
         String sortOrder = MediaStore.Audio.Media.TITLE + " ASC";
 
-        // Perform the query to retrieve the music items
-        Cursor cursor = getContentResolver().query(
-                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                projection,
-                selection,
-                null,
-                sortOrder
-        );
+        // PERFORM QUERY TO RETRIEVE SONGS
+        Cursor cursor = getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, projection, selection, null, sortOrder);
 
-        // CURSOR IS THE RESULT SET OF A DATABASE QUERY ↑ (IN THIS CASE, ALL THE MP3 FILES)
+        // CURSOR IS THE RESULT SET OF A DATABASE QUERY ↑ (IN THIS CASE, ALL THE MP3 FILES WITH THOSE DECLARED COLUMNS)
         if (cursor != null) {
-            // getColumnIndexOrThrow() RETRIEVES THE INDEX OF A COLUMN IN THE CURSOR
+            // getColumnIndexOrThrow() RETRIEVES THE INDEX OF A COLUMN IN THE CURSOR, ASSIGN THEM TO VARIABLES
             int filePathColumnIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA);
             int albumIdColumnIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID);
             int titleColumnIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE);
@@ -234,7 +224,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements SongAdapte
                     albumArt = BitmapFactory.decodeStream(inputStream);
                     inputStream.close();
                     // TOTAL COUNT OF SONGS FOUND
-                    totalCountTextView.setText("Total songs found (" + songList.size() + ")");
+                    totalCountTextView.setText("Total songs found (" + (songList.size() + 1) + ")");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -260,7 +250,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements SongAdapte
         titleTextView.setText(title.getText().toString());
         artistTextView.setText(artist.getText().toString());
 
-        // Call playSongAtIndex() to play the selected song
+        // PLAY SELECTED SONG
         playSongAtIndex(currentSongPosition, duration);
 
         updateUIWithCurrentSong();
@@ -278,12 +268,14 @@ public class MusicPlayerActivity extends AppCompatActivity implements SongAdapte
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
                 mediaPlayer.pause();
+                pauseButton.setImageResource(R.drawable.ic_play);
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 mediaPlayer.seekTo(newSongTiming);
                 mediaPlayer.start();
+                pauseButton.setImageResource(R.drawable.ic_pause);
             }
         });
     }
@@ -333,7 +325,18 @@ public class MusicPlayerActivity extends AppCompatActivity implements SongAdapte
 
         // Start updating the SeekBar when the song starts playing
         handler.postDelayed(updateSeekBar, 100);
+
+        // WHEN MUSIC ENDS
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                isPlaying = false;
+                pauseButton.setImageResource(R.drawable.ic_play);
+            }
+        });
     }
+
+
 
     private void updateUIWithCurrentSong() {
         Song song = songList.get(currentSongPosition);
