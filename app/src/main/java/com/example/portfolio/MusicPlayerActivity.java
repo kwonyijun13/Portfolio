@@ -48,6 +48,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements SongAdapte
     private TextView titleTextView, artistTextView;
     private ImageButton pauseButton, previousButton, nextButton;
     private EditText searchEditText;
+    private boolean isPlaying = false;
 
     // ANY INTEGER VALUE CAN BE USED (UNIQUE)
     private static final int PERMISSION_REQUEST_CODE = 123;
@@ -207,18 +208,43 @@ public class MusicPlayerActivity extends AppCompatActivity implements SongAdapte
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 
+        bottomMusicView.setVisibility(View.VISIBLE);
+        albumImage.setImageDrawable(imageView.getDrawable());
+        titleTextView.setText(title.getText().toString());
+        artistTextView.setText(artist.getText().toString());
+
         try {
+            // PLAY MUSIC
             mediaPlayer.setDataSource(fileName);
             mediaPlayer.prepare();
             mediaPlayer.start();
 
-            bottomMusicView.setVisibility(View.VISIBLE);
-            albumImage.setImageDrawable(imageView.getDrawable());
-            titleTextView.setText(title.getText().toString());
-            artistTextView.setText(artist.getText().toString());
+            pauseButton.setImageResource(R.drawable.ic_pause);
+            isPlaying = true;
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        pauseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isPlaying) {
+                    // PAUSE MUSIC
+                    if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+                        mediaPlayer.pause();
+                    }
+                    isPlaying = false;
+                    pauseButton.setImageResource(R.drawable.ic_play);
+                } else {
+                    // PLAY MUSIC
+                    if (mediaPlayer != null && !mediaPlayer.isPlaying()) {
+                        mediaPlayer.start();
+                    }
+                    isPlaying = true;
+                    pauseButton.setImageResource(R.drawable.ic_pause);
+                }
+            }
+        });
     }
 
     // PASSED FROM SONGADAPTER.JAVA'S INTERFACE
@@ -239,6 +265,10 @@ public class MusicPlayerActivity extends AppCompatActivity implements SongAdapte
         ImageView albumImageView = bottomSheetDialog.findViewById(R.id.album_image);
         TextView titleTextView = bottomSheetDialog.findViewById(R.id.song_title);
         TextView artistTextView = bottomSheetDialog.findViewById(R.id.artist_name);
+        ImageButton addToPlaylistButton = bottomSheetDialog.findViewById(R.id.addToPlaylistImageButton);
+        TextView addToPlaylistText = bottomSheetDialog.findViewById(R.id.addToPlaylistTextView);
+        ImageButton deleteButton = bottomSheetDialog.findViewById(R.id.deleteImageButton);
+        TextView deleteTextView = bottomSheetDialog.findViewById(R.id.deleteTextView);
 
         // Set the song details in the views
         albumImageView.setImageBitmap(song.getAlbumImage());
