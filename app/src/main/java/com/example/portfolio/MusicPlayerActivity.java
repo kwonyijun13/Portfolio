@@ -49,6 +49,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements SongAdapte
     private ImageButton pauseButton, previousButton, nextButton;
     private EditText searchEditText;
     private boolean isPlaying = false;
+    private int currentSongPosition = -1;
 
     // ANY INTEGER VALUE CAN BE USED (UNIQUE)
     private static final int PERMISSION_REQUEST_CODE = 123;
@@ -99,6 +100,47 @@ public class MusicPlayerActivity extends AppCompatActivity implements SongAdapte
 
                 // Show the PopupMenu
                 popupMenu.show();
+            }
+        });
+
+        pauseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isPlaying) {
+                    // PAUSE MUSIC
+                    if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+                        mediaPlayer.pause();
+                    }
+                    isPlaying = false;
+                    pauseButton.setImageResource(R.drawable.ic_play);
+                } else {
+                    // PLAY MUSIC
+                    if (mediaPlayer != null && !mediaPlayer.isPlaying()) {
+                        mediaPlayer.start();
+                    }
+                    isPlaying = true;
+                    pauseButton.setImageResource(R.drawable.ic_pause);
+                }
+            }
+        });
+
+        previousButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (currentSongPosition > 0) {
+                    currentSongPosition--;
+                    playSongAtIndex(currentSongPosition);
+                }
+            }
+        });
+
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (currentSongPosition < songList.size() - 1) {
+                    currentSongPosition++;
+                    playSongAtIndex(currentSongPosition);
+                }
             }
         });
     }
@@ -198,20 +240,34 @@ public class MusicPlayerActivity extends AppCompatActivity implements SongAdapte
     // PASSED FROM SONGADAPTER.JAVA'S INTERFACE
     @Override
     public void onItemClick(int position, String fileName, ImageView imageView, TextView title, TextView artist) {
+        // SET CURRENT SONG'S POSITION TO CURRENTSONGPOSITION
+        currentSongPosition = position;
+
+        bottomMusicView.setVisibility(View.VISIBLE);
+        albumImage.setImageDrawable(imageView.getDrawable());
+        titleTextView.setText(title.getText().toString());
+        artistTextView.setText(artist.getText().toString());
+
+        // Call playSongAtIndex() to play the selected song
+        playSongAtIndex(currentSongPosition);
+
+        updateUIWithCurrentSong();
+    }
+
+    private void playSongAtIndex(int position) {
         // CHECK IF THERE IS AN AUDIO ALREADY PLAYING
         if (mediaPlayer != null) {
             mediaPlayer.release();
             mediaPlayer = null;
         }
 
+        currentSongPosition = position;
+        Song song = songList.get(position);
+        String fileName = song.getFilePath();
+
         // CREATE A NEW INSTANCE OF MEDIAPLAYER TO PLAY NEW SONG
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-
-        bottomMusicView.setVisibility(View.VISIBLE);
-        albumImage.setImageDrawable(imageView.getDrawable());
-        titleTextView.setText(title.getText().toString());
-        artistTextView.setText(artist.getText().toString());
 
         try {
             // PLAY MUSIC
@@ -221,30 +277,18 @@ public class MusicPlayerActivity extends AppCompatActivity implements SongAdapte
 
             pauseButton.setImageResource(R.drawable.ic_pause);
             isPlaying = true;
+            updateUIWithCurrentSong();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
-        pauseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (isPlaying) {
-                    // PAUSE MUSIC
-                    if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-                        mediaPlayer.pause();
-                    }
-                    isPlaying = false;
-                    pauseButton.setImageResource(R.drawable.ic_play);
-                } else {
-                    // PLAY MUSIC
-                    if (mediaPlayer != null && !mediaPlayer.isPlaying()) {
-                        mediaPlayer.start();
-                    }
-                    isPlaying = true;
-                    pauseButton.setImageResource(R.drawable.ic_pause);
-                }
-            }
-        });
+    private void updateUIWithCurrentSong() {
+        Song song = songList.get(currentSongPosition);
+        bottomMusicView.setVisibility(View.VISIBLE);
+        albumImage.setImageBitmap(song.getAlbumImage());
+        titleTextView.setText(song.getTitle());
+        artistTextView.setText(song.getArtist());
     }
 
     // PASSED FROM SONGADAPTER.JAVA'S INTERFACE
